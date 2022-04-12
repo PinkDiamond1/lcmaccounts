@@ -146,7 +146,7 @@ feature 'Educator signup flow', js: true do
 
     let(:user) do
       FactoryBot.create(
-        :user, is_newflow: true, role: User::INSTRUCTOR_ROLE,
+        :user, role: User::INSTRUCTOR_ROLE,
         is_profile_complete: false, sheerid_verification_id: Faker::Alphanumeric.alphanumeric
       )
     end
@@ -154,8 +154,7 @@ feature 'Educator signup flow', js: true do
     context 'step 4' do
       before do
         visit(educator_profile_form_path)
-        expect_educator_step_4_page
-        select_educator_role('instructor')
+        find("#signup_educator_specific_role_instructor").click
         find('#signup_who_chooses_books_instructor').click
         fill_in(I18n.t(:"educator_profile_form.num_students_taught"), with: 30)
       end
@@ -239,7 +238,7 @@ feature 'Educator signup flow', js: true do
 
       # Step 3
       expect_sheerid_iframe
-      simulate_step_3_instant_verification(User.last, sheerid_verification.verification_id)
+      EducatorSignup::VerifyEducator.call(user: User.last, verification_id: sheerid_verification.verification_id)
 
       # Step 4
       expect_educator_step_4_page
@@ -258,7 +257,7 @@ feature 'Educator signup flow', js: true do
     it 'redirects them to continue signup flow (step 4) after logging in'
   end
 
-    let!(:educator) { create_newflow_user(email_value, password) }
+    let!(:educator) { create_user(email_value, password) }
     let(:email_value) { 'user@openstax.org' }
     let(:password) { 'password' }
 
