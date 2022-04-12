@@ -125,10 +125,6 @@ Rails.application.routes.draw do
     put 'profile', action: :update
   end
 
-  scope 'signup' do
-    get '/' => redirect('signup')
-  end
-
   scope controller: 'identities', path: 'password', as: 'password' do
     get 'reset'
     post 'reset'
@@ -192,8 +188,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :messages, only: [:create]
-
     resources :groups, only: [:index, :show, :create, :update, :destroy] do
       post '/members/:user_id', to: 'group_members#create'
       delete '/members/:user_id', to: 'group_members#destroy'
@@ -210,8 +204,8 @@ Rails.application.routes.draw do
 
     resources :contact_infos, only: [] do
       member do
-        put 'resend_confirmation'
-        put 'confirm_by_pin'
+        put 'verify'
+        delete 'destroy'
       end
     end
 
