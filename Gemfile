@@ -52,7 +52,7 @@ gem 'error_page_assets'
 gem 'render_anywhere', require: false
 
 # Password hashing
-gem 'bcrypt', '~> 3.1'
+gem 'bcrypt'
 
 # OAuth provider
 gem 'doorkeeper'
@@ -221,7 +221,7 @@ group :development, :test do
   gem 'vcr'
 
   # Lint ruby files
-  gem 'rubocop', '~> 0.76.0', require: false
+  gem 'rubocop', require: false
 
   # Lint RSpec files
   gem 'rubocop-rspec'
@@ -234,9 +234,6 @@ end
 group :development do
   # See updates in development to reload rails
   gem 'listen'
-
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 3.7'
 
   gem 'i18n-tasks'
 end
