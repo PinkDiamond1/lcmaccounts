@@ -185,7 +185,6 @@ group :development, :test do
   gem 'rspec-instafail'
 
   # See config/initializers/04-debugger.rb
-  #
   # Call 'debugger' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', require: false
 
@@ -219,15 +218,16 @@ group :development, :test do
   # Records HTTP requests
   gem 'vcr'
 
-  # Lint ruby files
-  gem 'rubocop', require: false
-
-  # Lint RSpec files
-  gem 'rubocop-rspec'
-
   gem 'faraday'
-
   gem 'faraday_middleware'
+end
+
+group :development, :lint do
+  gem 'rubocop', require: false
+  gem 'rubocop-packaging', require: false
+  gem 'rubocop-performance', require: false
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rspec', require: false
 end
 
 group :development do
