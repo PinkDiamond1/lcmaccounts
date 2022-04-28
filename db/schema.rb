@@ -324,7 +324,7 @@ ActiveRecord::Schema.define(version: 2022_06_01_160740) do
     t.datetime "updated_at", null: false
     t.index ["kind", "reference"], name: "index_sequential_failures_on_kind_and_reference", unique: true
   end
-  
+
   create_table "sheerid_verifications", force: :cascade do |t|
     t.string "verification_id", null: false
     t.string "email"
