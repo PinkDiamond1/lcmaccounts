@@ -213,7 +213,7 @@ as: :reset_password_email_sent
   mount FinePrint::Engine => '/admin/fine_print'
   mount OpenStax::Utilities::Engine => :status
 
-  namespace 'admin' do
+  namespace :admin do
     get '/', to: 'base#index'
     get '/console', to: 'console#index'
 
