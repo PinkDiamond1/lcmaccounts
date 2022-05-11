@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   get 'faculty_access/apply/' => redirect('signup/educator/apply')
   get 'faculty_access/pending/' => redirect('signup/educator/pending_cs_verification')
   get 'signout' => redirect { :logout_path }
-  
+
 
   direct :salesforce_knowledge_base do
     'https://openstax.secure.force.com/help/articles/FAQ/Can-t-log-in-to-your-OpenStax-account'
@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     post 'login', action: :login_post
     get 'reauthenticate', action: :reauthenticate_form, as: :reauthenticate_form
     get 'logout', action: :logout, as: :logout
-    get 'signout', action: :logout
+    get 'signout', action: :logout # TODO: let's get people moved to /logout
   end
 
   scope controller: 'signup' do
