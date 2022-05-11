@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   match 'i/(*path)' => redirect { |_,request|
     "/#{request.params[:path]}?#{request.params.except('path').to_query}"
   }, via: :all
-  
+
   # routes to old faculty access controller, redirect them to the sheerid form or pending cs paths
   get 'faculty_access/apply/' => redirect('signup/educator/apply')
   get 'faculty_access/pending/' => redirect('signup/educator/pending_cs_verification')
