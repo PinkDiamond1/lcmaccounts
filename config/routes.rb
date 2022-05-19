@@ -5,12 +5,11 @@ Rails.application.routes.draw do
   match 'i/(*path)' => redirect { |_,request|
     "/#{request.params[:path]}?#{request.params.except('path').to_query}"
   }, via: :all
-
+  
   # routes to old faculty access controller, redirect them to the sheerid form or pending cs paths
   get 'faculty_access/apply/' => redirect('signup/educator/apply')
   get 'faculty_access/pending/' => redirect('signup/educator/pending_cs_verification')
   get 'signout' => redirect { :logout_path }
-
 
   direct :salesforce_knowledge_base do
     'https://openstax.secure.force.com/help/articles/FAQ/Can-t-log-in-to-your-OpenStax-account'
