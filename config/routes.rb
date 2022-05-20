@@ -57,7 +57,7 @@ as: :change_signup_email_post
   scope controller: :educator_signup do
     # Step 3
     get 'signup/educator/apply', action: :sheerid_form, as: :sheerid_form
-    post 'i/sheerid/webhook', action: :sheerid_webhook, as: :sheerid_webhook
+    post 'sheerid/webhook', action: :sheerid_webhook, as: :sheerid_webhook
 
     # Step 4
     get 'signup/educator/profile_form', action: :profile_form, as: :profile_form
