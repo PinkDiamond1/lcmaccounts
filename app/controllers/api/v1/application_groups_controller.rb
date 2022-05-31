@@ -28,16 +28,14 @@ class Api::V1::ApplicationGroupsController < Api::V1::ApiController
   def updates
     OSU::AccessPolicy.require_action_allowed!(:updates, current_api_user, ApplicationGroup)
     outputs = GetUpdatedApplicationGroups.call(current_application).outputs
-    respond_with outputs[:application_groups],
-                 represent_with: Api::V1::ApplicationGroupsRepresenter, location: nil
+    respond_with outputs[:application_groups], represent_with: Api::V1::ApplicationGroupsRepresenter, location: nil
   end
 
   ###############################################################
   # updated
   ###############################################################
 
-  api :PUT, '/application_groups/updated',
-            'Marks ApplicationGroup updates as "read"'
+  api :PUT, '/application_groups/updated', 'Marks ApplicationGroup updates as "read"'
   description <<-EOS
     Can only be called by an application through the client credentials flow.
     Marks ApplicationGroup updates as read for the current application.
@@ -61,7 +59,7 @@ class Api::V1::ApplicationGroupsController < Api::V1::ApiController
     OSU::AccessPolicy.require_action_allowed!(:updated, current_api_user, ApplicationGroup)
     errors = MarkApplicationGroupUpdatesAsRead.call(current_application,
                ActiveSupport::JSON.decode(request.body.string)).errors
-    head (errors.any? ? :internal_server_error : :no_content)
+    head(errors.any? ? :internal_server_error : :no_content)
   end
 
 end
