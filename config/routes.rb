@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   scope controller: 'other' do
     # Profile access
     get 'profile'
+    put 'profile', action: :update
 
     # Exit accounts back to app they came from
     get 'exit_accounts'
@@ -115,10 +116,6 @@ Rails.application.routes.draw do
   scope 'remote', controller: 'remote' do
     get 'iframe'
     get 'notify_logout', as: 'iframe_after_logout'
-  end
-
-  scope controller: 'users' do
-    put 'profile', action: :update
   end
 
   scope 'signup' do
