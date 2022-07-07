@@ -24,5 +24,4 @@ Rails.application.config.assets.precompile += %w(
   newflow.js
   profile-nf.css
   application/ko_extensions.js
-  bootstrap-editable-rails.js
 )
