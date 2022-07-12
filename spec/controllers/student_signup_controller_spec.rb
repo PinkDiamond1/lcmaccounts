@@ -159,8 +159,4 @@ RSpec.describe StudentSignupController, type: :controller do
       expect(response.status).to eq(302)
     end
   end
-
-  describe 'POST #student_verify_email_by_pin' do
-    it ''
-  end
 end

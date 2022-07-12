@@ -2,7 +2,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'static_pages#home'
-  
+
   # routes to old faculty access controller, redirect them to the sheerid form or pending cs paths
   get 'faculty_access/apply/' => redirect('signup/educator/apply')
   get 'faculty_access/pending/' => redirect('signup/educator/pending_cs_verification')

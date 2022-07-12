@@ -191,16 +191,4 @@ RSpec.describe EducatorSignupController, type: :controller do
       end
     end
   end
-
-  describe 'GET #educator_profile_form' do
-    it 'renders'
-  end
-
-  describe 'POST #educator_complete' do
-    it ''
-  end
-
-  describe 'POST #educator_verify_email_by_pin' do
-    it ''
-  end
 end
