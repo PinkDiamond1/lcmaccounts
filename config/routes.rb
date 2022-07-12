@@ -2,7 +2,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   root to: 'static_pages#home'
-
+  
   # routes to old faculty access controller, redirect them to the sheerid form or pending cs paths
   get 'faculty_access/apply/' => redirect('signup/educator/apply')
   get 'faculty_access/pending/' => redirect('signup/educator/pending_cs_verification')
@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     'https://openstax.secure.force.com/help/articles/FAQ/Can-t-log-in-to-your-OpenStax-account'
   end
 
-  scope controller: 'other' do
+  scope controller: :profile do
     # Profile access
     get 'profile'
     put 'profile', action: :update
@@ -34,7 +34,7 @@ Rails.application.routes.draw do
     get 'check_your_email'
   end
 
-  scope controller: 'student_signup' do
+  scope controller: :student_signup do
     get 'signup/student', action: :student_signup_form, as: :signup_student
     post 'signup/student', action: :student_signup, as: :signup_post
 
@@ -47,7 +47,7 @@ Rails.application.routes.draw do
     post 'signup/student/verify_email_by_pin', action: :student_verify_email_by_pin, as: :student_verify_pin
   end
 
-  scope controller: 'educator_signup' do
+  scope controller: :educator_signup do
     # Step 1
     get 'signup/educator', action: :educator_signup_form, as: :educator_signup
     post 'signup/educator', action: :educator_signup, as: :educator_signup_post
@@ -74,7 +74,7 @@ Rails.application.routes.draw do
     post 'signup/educator/cs_verification_request', action: :educator_complete_profile, as: :educator_cs_verification_request
   end
 
-  scope controller: 'password_management' do
+  scope controller: :password_management do
     # Password management process (forgot,  change, or create password)
     get 'forgot_password_form'
     post 'send_reset_password_email'
@@ -110,13 +110,7 @@ Rails.application.routes.draw do
   # The actual request, however, is handled by the omniauth middleware when it detects
   #     that the current_url is the callback_path, using `OmniAuth::Strategy#on_callback_path?`
   #     So, admittedly, this route is deceiving.
-  get '/auth/:provider', to: ->(_env) { [404, {}, ['Not Found']] }, as: :auth
-
-  # routes for access via an iframe
-  scope 'remote', controller: 'remote' do
-    get 'iframe'
-    get 'notify_logout', as: 'iframe_after_logout'
-  end
+  get '/auth/:provider', to: ->(_env) { [404, {}, ['Not Found']] }, as: :oauth
 
   scope 'signup' do
     get '/' => redirect('signup')
@@ -142,6 +136,7 @@ Rails.application.routes.draw do
     member do
       put 'set_searchable'
       put 'resend_confirmation'
+      put 'confirm_by_pin'
     end
   end
 
@@ -179,35 +174,26 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :application_groups, only: [] do
-      collection do
-        get 'updates'
-        put 'updated'
-      end
-    end
-
-    resources :messages, only: [:create]
-
-    resources :groups, only: [:index, :show, :create, :update, :destroy] do
-      post '/members/:user_id', to: 'group_members#create'
-      delete '/members/:user_id', to: 'group_members#destroy'
-
-      post '/owners/:user_id', to: 'group_owners#create'
-      delete '/owners/:user_id', to: 'group_owners#destroy'
-
-      post '/nestings/:member_group_id', to: 'group_nestings#create'
-      delete '/nestings/:member_group_id', to: 'group_nestings#destroy'
-    end
-
-    resources :group_members, only: [:index], path: 'memberships'
-    resources :group_owners, only: [:index], path: 'ownerships'
-
-    resources :contact_infos, only: [] do
-      member do
-        put 'resend_confirmation'
-        put 'confirm_by_pin'
-      end
-    end
+    # resources :application_groups, only: [] do
+    #   collection do
+    #     get 'updates'
+    #     put 'updated'
+    #   end
+    # end
+    #
+    # resources :groups, only: [:index, :show, :create, :update, :destroy] do
+    #   post '/members/:user_id', to: 'group_members#create'
+    #   delete '/members/:user_id', to: 'group_members#destroy'
+    #
+    #   post '/owners/:user_id', to: 'group_owners#create'
+    #   delete '/owners/:user_id', to: 'group_owners#destroy'
+    #
+    #   post '/nestings/:member_group_id', to: 'group_nestings#create'
+    #   delete '/nestings/:member_group_id', to: 'group_nestings#destroy'
+    # end
+    #
+    # resources :group_members, only: [:index], path: 'memberships'
+    # resources :group_owners, only: [:index], path: 'ownerships'
 
     get 'raise_exception/:type', to: 'dev#raise_exception' unless Rails.env.production?
   end
@@ -221,8 +207,8 @@ Rails.application.routes.draw do
     get '/', to: 'base#index'
     get '/console', to: 'console#index'
 
-    put 'cron',                         to: 'base#cron'
-    get 'raise_exception/:type',        to: 'base#raise_exception', as: 'raise_exception'
+    put 'cron', to: 'base#cron'
+    get 'raise_exception/:type', to: 'base#raise_exception', as: 'raise_exception'
 
     resources :users, only: [:index, :update, :edit] do
       post 'become', on: :member
