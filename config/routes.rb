@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   direct :salesforce_knowledge_base do
     'https://openstax.secure.force.com/help/articles/FAQ/Can-t-log-in-to-your-OpenStax-account'
   end
-  
+
   scope controller: :profile do
     # Profile access
     get 'profile'
