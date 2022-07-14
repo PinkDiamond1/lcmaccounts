@@ -160,12 +160,8 @@ RSpec.describe EducatorSignupController, type: :controller do
     end
   end
 
-  describe 'GET #educator_sheerid_form' do
-    it 'requires a logged in user'
-  end
-
   describe 'POST #sheerid_webhook' do
-    let(:handler) { EducatorSignup::SheeridWebhook }
+    let(:handler) { SheeridWebhook }
 
     let(:params) do
       { 'verificationId': Faker::Alphanumeric.alphanumeric(number: 24) }
