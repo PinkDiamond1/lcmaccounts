@@ -2,8 +2,7 @@ class EducatorSignupController < SignupController
 
   skip_forgery_protection(only: :sheerid_webhook)
 
-  before_action(:prevent_caching, only: :sheerid_webhook)
-  before_action(:exit_signup_if_logged_in, only: :educator_signup_form)
+  before_action :prevent_caching, only: :sheerid_webhook
 
   before_action(:restart_signup_if_missing_unverified_user, only: %i[
       educator_change_signup_email_form
@@ -23,6 +22,7 @@ class EducatorSignupController < SignupController
       educator_cs_verification_request
     ]
   )
+
   before_action(:exit_signup_if_steps_complete, only: %i[
       educator_sheerid_form
       educator_profile_form
@@ -100,7 +100,7 @@ class EducatorSignupController < SignupController
     @email_address = current_user.email_addresses.last&.value
   end
 
-  private #################
+  private
 
   def store_if_sheerid_is_unviable_for_user
     if is_school_not_supported_by_sheerid? || is_country_not_supported_by_sheerid?
@@ -112,13 +112,13 @@ class EducatorSignupController < SignupController
   def exit_signup_if_steps_complete
     case true
     when current_user.is_educator_pending_cs_verification && current_user.pending_faculty?
-      redirect_to(pending_cs_verification_path)
+      redirect_to(pending_cs_verification_form)
     when current_user.is_educator_pending_cs_verification && !current_user.pending_faculty?
       redirect_back(fallback_location: profile_path)
     when action_name == 'educator_sheerid_form' && current_user.step_3_complete?
-      redirect_to(profile_form_path)
+      redirect_to(profile_form)
     when action_name == 'educator_profile_form' && current_user.is_profile_complete?
-      redirect_to(profile_path)
+      redirect_to(profile)
     end
   end
 
@@ -152,11 +152,4 @@ class EducatorSignupController < SignupController
     )
     url.to_s
   end
-
-  def exit_signup_if_logged_in
-    if signed_in?
-      redirect_back(fallback_location: profile_path(request.query_parameters))
-    end
-  end
-
 end
