@@ -50,7 +50,7 @@ Rails.application.routes.draw do
     get 'signup/educator/cs_form', action: :pending_cs_verification_form, as: :cs_verification_form
     post 'signup/educator/cs_verification_request', action: :pending_cs_verification_post, as: :cs_verification_post
   end
-  
+
   scope controller: :passwords do
     # Password management process (forgot,  change, or create password)
     get 'forgot_password_form'
