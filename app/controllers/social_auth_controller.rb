@@ -1,8 +1,6 @@
 class SocialAuthController < ApplicationController
   fine_print_skip :general_terms_of_use, :privacy_policy
 
-  before_action :restart_signup_if_missing_unverified_user, only: [:confirm_oauth_info, :confirm_social_info_form]
-
   # Log in (or sign up and then log in) a user using a social (OAuth) provider
   def oauth_callback
       handle_with(
@@ -44,7 +42,7 @@ class SocialAuthController < ApplicationController
                 :"login_signup_form.should_social_signup",
                 sign_up: view_context.link_to(I18n.t(:"login_signup_form.sign_up"), signup_path)
               )
-            )
+            ) and return
           when :authentication_taken
             security_log(:authentication_transfer_failed, authentication_id: authentication.id)
             redirect_to(profile_path, alert: I18n.t(:"controllers.sessions.sign_in_option_already_used"))
