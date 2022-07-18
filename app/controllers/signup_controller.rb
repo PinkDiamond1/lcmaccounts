@@ -6,9 +6,7 @@ class SignupController < ApplicationController
   before_action(:skip_signup_done_for_tutor_users, only: :signup_done)
   before_action(:total_steps, except: [:welcome])
 
-  def welcome
-    redirect_back(fallback_location: profile_path) if signed_in?
-  end
+  def welcome; end
 
   def signup_form
     @selected_signup_role = params[:role]
@@ -114,7 +112,7 @@ class SignupController < ApplicationController
 
   def signup_done
     security_log(:sign_up_successful, form_name: action_name)
-    redirect_back(fallback_location: :signup_done) if current_user.is_tutor_user?
+    redirect_back if current_user.is_tutor_user?
   end
 
   private

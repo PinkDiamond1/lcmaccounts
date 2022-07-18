@@ -1,11 +1,11 @@
 class ProfileController < ApplicationController
 
   before_action :authenticate_user!, only: :profile
-  before_action :ensure_complete_educator_signup, only: :profile
+  before_action :redirect_instructors_needing_to_complete_signup, only: :profile
   before_action :prevent_caching, only: :profile
 
   def profile
-    redirect_instructors_needing_to_complete_signup
+    # redirect_instructors_needing_to_complete_signup
   end
 
   def update
@@ -46,5 +46,4 @@ class ProfileController < ApplicationController
       redirect_to(profile_form_path) and return
     end
   end
-
 end
