@@ -6,7 +6,6 @@ class SessionsController < ApplicationController
   before_action :cache_client_app, only: :login_form
   before_action :cache_alternate_signup_url, only: :login_form
   before_action :check_if_password_expired
-  before_action :maybe_skip_to_sign_up
   before_action :store_authorization_url_as_fallback
   #before_action :redirect_back, if: -> { signed_in? }, only: :login_form
 
