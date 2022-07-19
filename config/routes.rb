@@ -1,7 +1,7 @@
 # rubocop:disable Metrics/BlockLength
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
-  root to: 'sessions#login_form'
+  root to: 'signup#welcome'
 
   # routes to old faculty access controller, redirect them to the sheerid form or pending cs paths
   get 'faculty_access/apply/' => redirect('signup/educator/apply')
@@ -201,8 +201,6 @@ Rails.application.routes.draw do
 
   namespace 'admin' do
     get '/console', to: 'console#index'
-
-    put 'cron', to: 'base#cron'
     get 'raise_exception/:type', to: 'base#raise_exception', as: 'raise_exception'
 
     resources :users, only: [:index, :update, :edit] do

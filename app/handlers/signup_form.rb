@@ -1,5 +1,7 @@
 class SignupForm
 
+  include EducatorSignupHelper
+
   lev_handler
 
   uses_routine AgreeToTerms
@@ -69,8 +71,7 @@ class SignupForm
 
     run(::SetPassword,
         user: user,
-        password: signup_params.password,
-        password_confirmation: signup_params.password)
+        password: signup_params.password)
 
     # Agree to terms
     if options[:contracts_required]

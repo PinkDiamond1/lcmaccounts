@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'vcr_helper'
 
 describe VerifyEmailByPin, type: :handler do
   context 'when success' do

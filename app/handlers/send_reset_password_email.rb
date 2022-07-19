@@ -10,7 +10,7 @@ class SendResetPasswordEmail
     attribute :email
   end
 
-  protected #################
+  protected
 
   def authorized?
     true

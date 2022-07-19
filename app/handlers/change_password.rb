@@ -32,7 +32,6 @@ class ChangePassword
       ::SetPassword,
       user: @user,
       password: change_password_form_params.password,
-      password_confirmation: change_password_form_params.password
     )
   end
 

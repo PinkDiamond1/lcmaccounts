@@ -6,6 +6,8 @@ module Admin
 
     def index; end
 
+    def edit; end
+
     def search
       security_log :users_searched_by_admin, search: params[:search]
       handle_with(UsersSearch, complete: lambda { render 'index' })
@@ -51,10 +53,6 @@ module Admin
     def mark_users_updated
       ApplicationUser.update_all('unread_updates = unread_updates + 1')
       redirect_to actions_admin_users_path, notice: 'Incremented unread update count'
-    end
-
-    def force_update_lead
-      CreateSalesforceLead.call(user: get_user)
     end
 
     protected

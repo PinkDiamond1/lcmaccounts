@@ -26,7 +26,7 @@ module Api::V1
              readable: false,
              writeable: true,
              schema_info: {
-                 description: "Controls wheather email should be marked as verified"
+                 description: "Controls whether email should be marked as verified"
              }
 
     property :username,

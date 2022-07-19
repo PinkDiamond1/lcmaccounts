@@ -16,14 +16,14 @@
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
 
-  <title><%= @page_title + ' - ' if !@page_title.nil? %><%= PAGE_TITLE_SUFFIX %></title>
+  <title><%= @page_title + ' - ' unless @page_title.nil? %><%= PAGE_TITLE_SUFFIX %></title>
 
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= stylesheet_link_tag 'newflow', media: 'all' %>
   <%= javascript_include_tag 'application/index' %>
   <%= csrf_meta_tags %>
 
-  <% if Rails.env.production? %>
+  <% if Rails.application.secrets.environment_name == 'production' %>
     <script src="https://cdn.optimizely.com/js/1345615444.js"></script>
   <% end %>
 

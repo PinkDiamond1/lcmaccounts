@@ -13,7 +13,7 @@ class SheeridWebhook
     end
     verification_details_from_sheerid = SheeridAPI.get_verification_details(verification_id)
 
-    if !verification_details_from_sheerid.success?
+    unless verification_details_from_sheerid.success?
       Sentry.capture_message("[SheerID Webhook] fetching verification details FAILED",
                              extra: { verification_id: verification_id, verification_details: verification_details_from_sheerid }
       )
@@ -31,7 +31,7 @@ class SheeridWebhook
 
     user = EmailAddress.verified.find_by(value: verification.email)&.user
 
-    if !user.present?
+    unless user.present?
       Sentry.capture_message("[SheerID Webhook] No user found with verification id (#{verification_id}) and email (#{verification.email})",
                              extra: { verification_id: verification_id, verification_details_from_sheer_id: verification_details_from_sheerid }
       )
@@ -98,32 +98,32 @@ class SheeridWebhook
     end
 
     if verification.current_step == 'rejected'
-      user.update!(faculty_status: User::REJECTED_BY_SHEERID, sheerid_verification_id: verification_id)
+      user.update!(faculty_status: 'rejected_by_sheerid', sheerid_verification_id: verification_id)
       SecurityLog.create!(
         event_type: :fv_reject_by_sheerid,
         user: user,
         event_data: { status: "User Rejected By SheerID", verification_id: verification_id })
     elsif verification.current_step == 'success'
-      user.update!(faculty_status: User::CONFIRMED_FACULTY, sheerid_verification_id: verification_id)
+      user.update!(faculty_status: 'confirmed_faculty', sheerid_verification_id: verification_id)
       SecurityLog.create!(
         event_type: :fv_success_by_sheerid,
         user: user,
         event_data: { status: "User Faculty Verified by SheerID", verification_id: verification_id })
     elsif verification.current_step == 'collectTeacherPersonalInfo'
-      user.update!(faculty_status: User::PENDING_SHEERID, sheerid_verification_id: verification_id)
+      user.update!(faculty_status: 'pending_sheerid', sheerid_verification_id: verification_id)
       SecurityLog.create!(
         event_type: :sheerid_webhook_request_more_info,
         user: user,
         event_data: { status: "SheerID Requested More Information", verification: verification_details_from_sheerid.inspect })
     elsif verification.current_step == 'error'
-      user.update!(faculty_status: User::REJECTED_BY_SHEERID, sheerid_verification_id: verification_id)
+      user.update!(faculty_status: 'rejected_by_sheerid', sheerid_verification_id: verification_id)
       user.update!(sheerid_verification_id: verification_id)
       SecurityLog.create!(
         event_type: :sheerid_error,
         user: user,
         event_data: { status: "Error from SheerID", verification: verification_details_from_sheerid.inspect })
     else
-      user.update!(faculty_status: User::REJECTED_BY_SHEERID, sheerid_verification_id: verification_id)
+      user.update!(faculty_status: 'rejected_by_sheerid', sheerid_verification_id: verification_id)
       SecurityLog.create!(
         event_type: :unknown_sheerid_response,
         user: user,

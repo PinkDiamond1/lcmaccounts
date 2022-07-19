@@ -1,12 +1,13 @@
 class SignupController < ApplicationController
-  include SignupHelper
 
   before_action(:exit_signup_if_logged_in, only: :welcome)
   before_action(:authenticate_user!, only: :signup_done)
   before_action(:skip_signup_done_for_tutor_users, only: :signup_done)
   before_action(:total_steps, except: [:welcome])
 
-  def welcome; end
+  def welcome
+    redirect_back(fallback_location: profile_path) if signed_in?
+  end
 
   def signup_form
     @selected_signup_role = params[:role]
@@ -24,11 +25,11 @@ class SignupController < ApplicationController
       SignupForm,
       contracts_required: !contracts_not_required,
       client_app: get_client_app,
-      is_bri_book: is_BRI_book_adopter?,
+      is_bri_book: is_bri_book_adopter?,
       success: lambda {
         save_unverified_user(@handler_result.outputs.user.id)
         security_log(:user_viewed_signup_form, { user: @handler_result.outputs.user })
-        clear_cache_BRI_marketing
+        clear_cache_bri_marketing
         redirect_to verify_email_by_pin_form_path and return
       },
       failure: lambda {
@@ -116,6 +117,12 @@ class SignupController < ApplicationController
   end
 
   private
+
+  def skip_to_student_sign_up
+    if %w[signup student_signup].include?(request.params[:go])
+      redirect_to signup_path(role: 'student')
+    end
+  end
 
   def total_steps
     @total_steps ||= if params[:role]

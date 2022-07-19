@@ -1,9 +1,8 @@
 class Api::V1::ApplicationUsersController < Api::V1::ApiController
-  #before_action :get_app_user, :only => [:show, :update, :destroy]
 
   resource_description do
     api_versions "v1"
-    short_description 'Records which users interact with which applications, as well the users'' preferences for each app.'
+    short_description 'Records which users interact with which applications, as well the users preferences for each app.'
     description <<-EOS
       All actions in this controller operate only on ApplicationUsers that
       belong to the current application, as determined from the Oauth token.
@@ -118,48 +117,6 @@ class Api::V1::ApplicationUsersController < Api::V1::ApiController
     respond_with application_user, represent_with: Api::V1::ApplicationUserRepresenter, location: nil
   end
 
-  ###############################################################
-  # show
-  ###############################################################
-
-#api :GET, '/application_user', 'Gets the ApplicationUser for the current user and current app.'
-#description <<-EOS
-#  Can only be called by an application using an access token for a user.
-#  Gets the ApplicationUser for the current user and current app.
-
-#  #{json_schema(Api::V1::ApplicationUserRepresenter, include: :readable)}
-#EOS
-#def show
-#  standard_read(ApplicationUser, app_user.id)
-#end
-
-  ###############################################################
-  # update
-  ###############################################################
-
-#api :PUT, '/application_user', 'Updates the ApplicationUser for the current user and current app.'
-#description <<-EOS
-#  Can only be called by an application using an access token for a user.
-#  Updates the ApplicationUser for the current user and current app.
-
-#  #{json_schema(Api::V1::ApplicationUserRepresenter, include: [:writeable])}
-#EOS
-#def update
-#  standard_update(ApplicationUser, app_user.id)
-#end
-
-  ###############################################################
-  # destroy
-  ###############################################################
-
-#api :DELETE, '/application_user', 'Deletes the ApplicationUser for the current user and current app.'
-#description <<-EOS
-#  Can only be called by an application using an access token for a user.
-#  Deletes the ApplicationUser for the current user and current app.
-#EOS
-#def destroy
-#  standard_destroy(ApplicationUser, app_user.id)
-#end
 
   ###############################################################
   # updates
@@ -224,14 +181,4 @@ class Api::V1::ApplicationUsersController < Api::V1::ApiController
 
     head(errors.any? ? :internal_server_error : :no_content)
   end
-
-  # protected
-
-  # def get_app_user
-  #   raise SecurityTransgression
-  #   @app_user = current_human_user.application_users.where(
-  #                 :application_id => current_application.id
-  #               ).first
-  # end
-
 end
